@@ -10,7 +10,7 @@ ASCII_CHARS = list("$@B%8&WM#*oahkbdpqwmZOXLzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"
 #ASCII_CHARS = list("█▓▒░ ")[::-1]
 
 """Choose the height and width for the frame"""
-w_height = 500
+w_height = 700
 w_width = w_height*1.7
 
 """Choose the character size"""
