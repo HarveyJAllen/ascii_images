@@ -1,26 +1,41 @@
-from re import ASCII
 from cv2 import VideoCapture, resize, flip
 from PIL import Image, ImageEnhance
 import pygame, colorsys
 
-ASCII_CHARS = list("$@B%8&WM#*oahkbdpqwmZOXLzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
-ASCII_CHARS = ASCII_CHARS[::-1]
-# ASCII_CHARS = list(".:-=+*#%@")
-# ASCII_CHARS = list("█▓▒░ ")[::-1]
+#------------------------------------------------------------------------------------#
 
+"""Choose the character set for the image"""
+ASCII_CHARS = list("$@B%8&WM#*oahkbdpqwmZOXLzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")[::-1]
+#ASCII_CHARS = list(".:-=+*#%@")
+#ASCII_CHARS = list("█▓▒░ ")[::-1]
+
+"""Choose the height and width for the frame"""
+w_height = 700
+w_width = w_height*1.7
+
+"""Choose the character size"""
+font_size = 5
+
+"""Choose if you want an RGB image"""
+RGB = True
+
+#------------------------------------------------------------------------------------#
+
+divisor = int(256/len(ASCII_CHARS))+1
+
+#Set up pygame window
+pygame.init()
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode([1150, 750], pygame.RESIZABLE)
+base_font = pygame.font.SysFont("Consolas", font_size)
+
+#Set up camera
 cam = VideoCapture(0)
 cam.set(3, 180)
 cam.set(4, 240)
 
-
-pygame.init()
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode([1150, 750], pygame.RESIZABLE)
-#base_font = pygame.font.Font(None, 12)
-base_font = pygame.font.SysFont("FreeMono, Monospace", 5)
-
-
-def asciify(image):
+#turn image into an ascii string and print that to the pygame window
+def asciify(image): 
     screen.fill((0, 0, 0))
 
     img = Image.fromarray(image)
@@ -35,24 +50,22 @@ def asciify(image):
     for x in range(height):
         resultant_image += "\n"
         for y in range(width):
-            resultant_image += (f"{ASCII_CHARS[pixels[y, x]//4 ]}")
-    #os.system("clear")
+            resultant_image += (f"{ASCII_CHARS[pixels[y, x]//divisor]}")
     image_list = resultant_image.split("\n")
-    #print(image_list)
     lines = len(image_list)
     for x in range(lines):
-        #text = base_font.render(image_list[x], False, (tuple(x * 255 for x in colorsys.hsv_to_rgb(x/lines, 1, 1))))
-        text = base_font.render(image_list[x], False, (255, 0, 255))
-        screen.blit(text, (0, 5*x))
+        if RGB:
+            text = base_font.render(image_list[x], False, (tuple(x * 255 for x in colorsys.hsv_to_rgb(x/lines, 1, 1))))
+        else:
+            text = base_font.render(image_list[x], True, (255, 255, 255))
+        screen.blit(text, (0, font_size*x))
     pygame.display.flip()
     clock.tick(60)
 
 def get_frame():
-    s, img = cam.read()
-    if s:
-        img = flip(resize(img, (380, 150)), 1)
-        #img = flip(resize(img, (380//2, 150//2)), 1)
-        #img = flip(resize(img, (240, 180)), 1)
+    success, img = cam.read()
+    if success:
+        img = flip(resize(img, (int(1.7*w_width//font_size), int(1.2*w_height//font_size))), 1)
         asciify(img)
 
 if __name__ == "__main__":
