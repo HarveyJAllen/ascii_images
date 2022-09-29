@@ -10,7 +10,7 @@ ASCII_CHARS = list("$@B%8&WM#*oahkbdpqwmZOXLzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"
 #ASCII_CHARS = list("█▓▒░ ")[::-1]
 
 """Choose the height and width for the frame"""
-w_height = 700
+w_height = 500
 w_width = w_height*1.7
 
 """Choose the character size"""
@@ -26,7 +26,7 @@ divisor = int(256/len(ASCII_CHARS))+1
 #Set up pygame window
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode([1150, 750], pygame.RESIZABLE)
+screen = pygame.display.set_mode([w_width, w_height], pygame.RESIZABLE)
 base_font = pygame.font.SysFont("Consolas", font_size)
 
 #Set up camera
