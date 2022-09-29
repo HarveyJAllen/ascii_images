@@ -14,10 +14,10 @@ w_height = 700
 w_width = w_height*1.7
 
 """Choose the character size"""
-font_size = 5
+font_size = 10
 
 """Choose if you want an RGB image"""
-RGB = True
+RGB = False
 
 #------------------------------------------------------------------------------------#
 
